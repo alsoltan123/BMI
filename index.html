@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Tools Pro</title>
+
+<style>
+body{
+margin:0;
+font-family:Tahoma;
+background:linear-gradient(135deg,#0f172a,#2563eb);
+color:white;
+text-align:center;
+}
+
+header{
+padding:30px;
+}
+
+h1{
+margin:0;
+font-size:28px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+color:#111;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px;
+width:95%;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+.result{
+margin-top:10px;
+font-weight:bold;
+}
+
+.section{
+display:none;
+max-width:500px;
+margin:20px auto;
+background:white;
+color:black;
+padding:20px;
+border-radius:15px;
+}
+
+.active{
+display:block;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>🧠 Health Tools Pro</h1>
+<p>حاسبة BMI - السعرات - الوزن المثالي - الماء</p>
+</header>
+
+<!-- MENU -->
+<div class="container" id="menu">
+
+<div class="card" onclick="show('bmi')">🧮 BMI</div>
+<div class="card" onclick="show('cal')">🔥 السعرات</div>
+<div class="card" onclick="show('ideal')">⚖️ الوزن المثالي</div>
+<div class="card" onclick="show('water')">💧 الماء</div>
+
+</div>
+
+<!-- BMI -->
+<div class="section" id="bmi">
+<h2>BMI</h2>
+<input id="w" placeholder="الوزن">
+<input id="h" placeholder="الطول">
+<button onclick="calcBMI()">احسب</button>
+<div class="result" id="bmiRes"></div>
+</div>
+
+<!-- CALORIES -->
+<div class="section" id="cal">
+<h2>السعرات</h2>
+<input id="age" placeholder="العمر">
+<input id="cw" placeholder="الوزن">
+<input id="ch" placeholder="الطول">
+<button onclick="calcCal()">احسب</button>
+<div class="result" id="calRes"></div>
+</div>
+
+<!-- IDEAL -->
+<div class="section" id="ideal">
+<h2>الوزن المثالي</h2>
+<input id="ih" placeholder="الطول">
+<button onclick="ideal()">احسب</button>
+<div class="result" id="idealRes"></div>
+</div>
+
+<!-- WATER -->
+<div class="section" id="water">
+<h2>الماء</h2>
+<input id="ww" placeholder="الوزن">
+<button onclick="water()">احسب</button>
+<div class="result" id="waterRes"></div>
+</div>
+
+<script>
+
+// show section
+function show(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.getElementById('menu').style.display='none';
+}
+
+// BMI
+function calcBMI(){
+let w=document.getElementById("w").value;
+let h=document.getElementById("h").value/100;
+
+if(!w||!h){alert("أدخل القيم");return;}
+
+let bmi=w/(h*h);
+
+let msg="BMI = "+bmi.toFixed(1);
+
+if(bmi<18.5) msg+=" (نحافة)";
+else if(bmi<25) msg+=" (طبيعي)";
+else if(bmi<30) msg+=" (زيادة)";
+else msg+=" (سمنة)";
+
+document.getElementById("bmiRes").innerText=msg;
+}
+
+// calories
+function calcCal(){
+let age=document.getElementById("age").value;
+let w=document.getElementById("cw").value;
+let h=document.getElementById("ch").value;
+
+if(!age||!w||!h){alert("أدخل القيم");return;}
+
+let cal=10*w + 6.25*h - 5*age + 5;
+
+document.getElementById("calRes").innerText="السعرات: "+Math.round(cal);
+}
+
+// ideal weight
+function ideal(){
+let h=document.getElementById("ih").value;
+if(!h){alert("أدخل الطول");return;}
+
+let ideal=(h-100)-((h-150)/4);
+
+document.getElementById("idealRes").innerText=
+"الوزن المثالي: "+ideal.toFixed(1);
+}
+
+// water
+function water(){
+let w=document.getElementById("ww").value;
+if(!w){alert("أدخل الوزن");return;}
+
+document.getElementById("waterRes").innerText=
+"الماء: "+(w*0.033).toFixed(2)+" لتر";
+}
+
+</script>
+
+</body>
+</html>
